@@ -19,7 +19,13 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         await client.connect();
-        console.log("db connected");
+        const appointmentCollection = client.db("knockOnce").collection("appointments");
+
+        app.post("/appointment", async (req, res) => {
+            const appointmentInfo = req.body;
+            const result = await appointmentCollection.insertOne(appointmentInfo);
+            res.send(result);
+        })
     }
     finally {
 
